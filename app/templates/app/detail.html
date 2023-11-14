@@ -1,0 +1,20 @@
+<h1>{{ app.name }}({{ app.pk }})</h1>
+<i>{{ app.desc }}</i><br/>
+<small>{{ app.create_date | date }}</small>
+
+
+<hr>
+
+
+<ul>
+    {% for menu in app.menu_set.all %}
+        <li>{{ menu.name }}</li>
+
+        <ul>
+            {% for menuitem in menu.menuitem_set.all %}
+                <li>{{ menuitem.name }}</li>
+            {% endfor %}
+        </ul>
+
+    {% endfor %}
+</ul>
