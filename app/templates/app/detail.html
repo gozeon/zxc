@@ -12,9 +12,17 @@
 
         <ul>
             {% for menuitem in menu.menuitem_set.all %}
-                <li>{{ menuitem.name }}</li>
+                <li><a href="{% url 'detail' app.id %}?pageId={{ menuitem.page.pk }}">{{ menuitem.name }}</a></li>
             {% endfor %}
         </ul>
 
     {% endfor %}
 </ul>
+
+<hr>
+
+{% if page %}
+<div id="app">
+{{ page.content | safe }}
+</div>
+{% endif %}
