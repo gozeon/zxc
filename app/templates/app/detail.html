@@ -1,28 +1,85 @@
-<h1>{{ app.name }}({{ app.pk }})</h1>
-<i>{{ app.desc }}</i><br/>
-<small>{{ app.create_date | date }}</small>
+{% extends './base.html' %}
+
+{% block style %}
+    <style>
+        nav.menu {
+            width: 200px;
+            padding: 0;
+            border-right: 1px solid #ece9e9;
+        }
+
+        nav.menu ul, li {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav.menu ul li {
+            padding-left: 10px;
+            height: 30px;
+            line-height: 30px;
+            font-weight: bolder;
+        }
+
+        nav.menu ul li a {
+            display: inline-block;
+            width: 100%;
+            text-decoration: none;
+            color: #555;
+            font-weight: normal;
+        }
+
+        nav.menu ul li a.active {
+            text-decoration: underline;
+            color: #000;
+            font-weight: 500;
+        }
+
+        nav.menu ul li a:hover {
+            color: #000;
+        }
 
 
-<hr>
+        div#app {
+            flex: 1;
+            padding: 20px;
+        }
+    </style>
+{% endblock %}
 
+{% block headerTitle %}
+    <span>{{ app.name | upper }}</span>
+{% endblock %}
+{% block headerBtn %}
+    <a href="{% url "app" %}">ALL APP</a>
+{% endblock %}
 
-<ul>
-    {% for menu in app.menu_set.all %}
-        <li>{{ menu.name }}</li>
+{% block menu %}
+    {% if app.menu_set.all %}
+        <nav class="menu">
+            <ul>
+                {% for menu in app.menu_set.all %}
+                    <li>{{ menu.name }}</li>
+                    <ul>
+                        {% for menuitem in menu.menuitem_set.all %}
+                            <li><a href="{% url 'detail' app.id %}?pageId={{ menuitem.page.pk }}"
+                                   class="{% if menuitem.page.pk == page.pk %}active{% endif %}">{{ menuitem.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
 
-        <ul>
-            {% for menuitem in menu.menuitem_set.all %}
-                <li><a href="{% url 'detail' app.id %}?pageId={{ menuitem.page.pk }}">{{ menuitem.name }}</a></li>
-            {% endfor %}
-        </ul>
+                {% endfor %}
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock %}
 
-    {% endfor %}
-</ul>
-
-<hr>
-
-{% if page %}
-<div id="app">
-{{ page.content | safe }}
-</div>
-{% endif %}
+{% block content %}
+    <div id="app">
+        {% if page %}
+            {{ page.content | safe }}
+        {% else %}
+            {{ app.desc }}
+        {% endif %}
+    </div>
+{% endblock %}

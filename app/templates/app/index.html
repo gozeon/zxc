@@ -1,9 +1,49 @@
-{% if apps %}
-    <ul>
-    {% for app in apps %}
-        <li><a href="{% url 'detail' app.id %}">{{app.name}}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No apps are available.</p>
-{% endif %}
+{% extends './base.html' %}
+{% block menu %}{% endblock %}
+
+{% block style %}
+    <style>
+        .content {
+            padding: 20px 40px;
+        }
+
+        .content a.box {
+            padding: 8px 10px;
+            border-radius: 3px;
+            text-decoration: none;
+            color: black;
+
+            display: inline-block;
+        }
+
+        .content a.box .name {
+            font-size: 20px;
+            font-weight: bolder;
+        }
+
+        .content a.box .desc {
+            font-size: 16px;
+            line-height: 22px;
+            color: #333
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% if apps %}
+        <div class="content">
+            {% for app in apps %}
+                <a class="box" href="{% url 'detail' app.id %}">
+                    <div class="name">{{ app.name }}</div>
+
+                    <div class="desc">{{ app.desc }}</div>
+                    <div class="desc">ID: {{ app.id }}</div>
+                    <div class="desc">Create At: {{ app.create_date }}</div>
+                    <div class="desc">Create By: {{ app.create_user.username }}</div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No apps are available.</p>
+    {% endif %}
+{% endblock %}

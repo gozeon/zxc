@@ -8,8 +8,7 @@ from .models import Application, Page
 def index(request):
     result = Application.objects.filter(pub_date__isnull=False,
                                         create_user__isnull=False,
-                                        delete_date__isnull=True,
-                                        create_user=request.user).order_by('-pub_date')
+                                        delete_date__isnull=True).order_by('-pub_date')
     context = {
         "apps": result
     }
