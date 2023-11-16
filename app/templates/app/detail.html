@@ -50,6 +50,7 @@
 {% block headerTitle %}
     <span>{{ app.name | upper }}</span>
 {% endblock %}
+
 {% block headerBtn %}
     <a href="{% url "app" %}">ALL APP</a>
 {% endblock %}
@@ -75,11 +76,26 @@
 {% endblock %}
 
 {% block content %}
-    <div id="app">
-        {% if page %}
-            {{ page.content | safe }}
-        {% else %}
+    {% if page %}
+        <div id="app">
+            {{ elements | safe }}
+        </div>
+    {% else %}
+        <div id="app">
             {{ app.desc }}
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block link %}
+    {% if page %}
+        {{ links | safe }}
+        {{ styles | safe }}
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    {% if page %}
+        {{ scripts | safe }}
+    {% endif %}
 {% endblock %}
