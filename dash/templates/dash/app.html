@@ -4,12 +4,13 @@
     <t-table row-key="index" table-layout="auto" :columns="columns" :max-height="maxHeight" :data="apps" lazy-load>
         <template #operation="{ row }">
             <t-space>
-            <t-link :theme="row.pub_date?'warning':'success'">
-                [[ row.pub_date ? 'UnPublish' : 'Publish' ]]
-            </t-link>
-            <t-link theme="danger">
-                Delete
-            </t-link>
+                <t-link :theme="row.pub_date?'warning':'success'" :href="row.pub_url" :prefix-icon="renderPrefixIcon">
+                    [[ row.pub_date ? 'UnPublish' : 'Publish' ]]
+                </t-link>
+
+                <t-link theme="danger" :href="row.del_url">
+                    Delete
+                </t-link>
             </t-space>
         </template>
     </t-table>
@@ -17,6 +18,15 @@
 
 {% block script %}
     <script>
+        const messages = [
+            {% for message in messages %}
+                {
+                    level: "{{ message.level }}",
+                    msg: "{{ message }}",
+                    tags: "{{ message.tags }}",
+                },
+            {% endfor %}
+        ]
         const columns = [
             {colKey: 'id', title: 'ID'},
             {colKey: 'name', title: 'Name'},
@@ -36,6 +46,8 @@
                     "pub_date": "{{ app.pub_date | date:'c' }}",
                     "create_user": "{{ app.create_user.username }}",
                     "create_date": "{{ app.create_date | date:'c' }}",
+                    "del_url": "{% url "dash:del_app" app.pk %}",
+                    "pub_url": "{% url "dash:pub_app" app.pk %}",
                 },
             {% endfor %}
 
@@ -54,6 +66,11 @@
             mounted() {
                 this.setTableHeight()
                 window.addEventListener("resize", this.setTableHeight);
+                if (messages.length) {
+                    messages.forEach(m => {
+                        this.$message(m.tags, m.msg)
+                    })
+                }
             },
             unmounted() {
                 window.removeEventListener("resize", this.setTableHeight);

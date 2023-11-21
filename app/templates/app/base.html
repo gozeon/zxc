@@ -58,7 +58,7 @@
         <div>
             {% block headerBtn %}{% endblock %}
             {% if user.is_authenticated %}
-                <a href="{% url 'dash' %}">{{ "dash" | upper }}</a>
+                <a href="{% url 'dash:index' %}">{{ "dash" | upper }}</a>
                 <a href="{% url 'logout' %}">{{ user.username | upper }}</a>
             {% endif %}
         </div>
