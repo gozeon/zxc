@@ -1,0 +1,31 @@
+{% extends "dash/base.html" %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+
+        const app = Vue.createApp({
+            delimiters: ["[[", "]]"],
+            data() {
+                return {
+                    activeMenu: 'dashboard',
+                    collapsed: true,
+
+                }
+            },
+
+            methods: {
+                changeCollapsed: function () {
+                    this.collapsed = !this.collapsed
+                }
+            }
+        })
+
+        app.use(TDesign)
+        app.mount('#app');
+    </script>
+{% endblock %}

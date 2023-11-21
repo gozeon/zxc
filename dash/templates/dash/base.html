@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Dashboard{% block title %} - App{% endblock %}</title>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tdesign-vue-next/dist/tdesign.min.css"/>
+    <script src="https://unpkg.com/tdesign-vue-next/dist/tdesign.min.js"></script>
+
+    <style>
+        html,body {
+            margin: 0;
+        }
+        :root {
+            --component-border: #e7e7e7;
+        }
+
+        main.t-layout__content {
+            padding: 24px 24px 0;
+        }
+
+        main.t-layout__content > div {
+            background: #fff;
+            height: calc(100vh - 150px);
+            overflow: scroll;
+            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+            scrollbar-width: none;  /* Firefox */
+        }
+        main.t-layout__content > div::-webkit-scrollbar{
+            display: none;
+        }
+    </style>
+
+    {% block style %}
+    {% endblock %}
+
+</head>
+<body>
+
+<div id="app">
+    <t-layout>
+        <t-header>
+            <t-head-menu value="item1" height="120px">
+                <template #logo>
+                    <h1>ZXC</h1>
+                </template>
+
+                <template #operations>
+                    {% if user.is_staff %}
+                        <a href="{% url "admin:index" %}">
+                            <t-icon class="t-menu__operations-icon" name="system-setting"/>
+                        </a>
+                    {% endif %}
+                    <a href="{% url "app" %}">
+                        <t-icon class="t-menu__operations-icon" name="home"/>
+                    </a>
+                <a href="{% url "logout" %}">
+                        <t-icon class="t-menu__operations-icon" name="logout"/>
+                    </a>
+                </template>
+            </t-head-menu>
+        </t-header>
+        <t-layout>
+            <t-aside style="border-top: 1px solid var(--component-border)" :width="collapsed?'auto':''">
+                <t-menu theme="light" :value="activeMenu" :collapsed="collapsed">
+                    <t-menu-item value="dashboard" href="{% url "dash:index" %}">
+                        <template #icon>
+                            <t-icon name="dashboard"/>
+                        </template>
+                        仪表盘
+                    </t-menu-item>
+                    <t-menu-item value="app" href="{% url "dash:app" %}">
+                        <template #icon>
+                            <t-icon name="application"/>
+                        </template>
+                        应用
+                    </t-menu-item>
+
+                    <template #operations>
+                        <t-button class="t-demo-collapse-btn" variant="text" shape="square" @click="changeCollapsed">
+                            <template #icon>
+                                <t-icon :name="collapsed?'menu-fold':'menu-unfold'"/>
+                            </template>
+                        </t-button>
+                    </template>
+                </t-menu>
+            </t-aside>
+            <t-layout>
+                <t-content>
+                    <div>
+                        {% block content %}
+
+                        {% endblock %}
+                    </div>
+                </t-content>
+                <t-footer>Copyright @ 2019-[[ new Date().getFullYear() ]] ZXC. All Rights Reserved</t-footer>
+            </t-layout>
+        </t-layout>
+    </t-layout>
+
+</div>
+
+{% block script %}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,76 @@
+{% extends "dash/base.html" %}
+
+{% block content %}
+    <t-table row-key="index" table-layout="auto" :columns="columns" :max-height="maxHeight" :data="apps" lazy-load>
+        <template #operation="{ row }">
+            <t-space>
+            <t-link :theme="row.pub_date?'warning':'success'">
+                [[ row.pub_date ? 'UnPublish' : 'Publish' ]]
+            </t-link>
+            <t-link theme="danger">
+                Delete
+            </t-link>
+            </t-space>
+        </template>
+    </t-table>
+{% endblock %}
+
+{% block script %}
+    <script>
+        const columns = [
+            {colKey: 'id', title: 'ID'},
+            {colKey: 'name', title: 'Name'},
+            {colKey: 'desc', title: 'Description'},
+            {colKey: 'pub_date', title: 'Publish At'},
+            {colKey: 'create_user', title: 'Create By'},
+            {colKey: 'create_date', title: 'Create At'},
+            {colKey: 'operation', title: 'Operation', fixed: 'right'},
+        ]
+
+        const apps = [
+            {% for app in apps %}
+                {
+                    "id": "{{ app.pk }}",
+                    "name": "{{ app.name }}",
+                    "desc": "{{ app.desc }}",
+                    "pub_date": "{{ app.pub_date | date:'c' }}",
+                    "create_user": "{{ app.create_user.username }}",
+                    "create_date": "{{ app.create_date | date:'c' }}",
+                },
+            {% endfor %}
+
+        ]
+        const app = Vue.createApp({
+            delimiters: ["[[", "]]"],
+            data() {
+                return {
+                    activeMenu: 'app',
+                    maxHeight: 500,
+                    collapsed: true,
+                    columns: columns,
+                    apps: apps
+                }
+            },
+            mounted() {
+                this.setTableHeight()
+                window.addEventListener("resize", this.setTableHeight);
+            },
+            unmounted() {
+                window.removeEventListener("resize", this.setTableHeight);
+            },
+            methods: {
+                setTableHeight() {
+                    const rect = document.querySelector('main.t-layout__content>div')?.getBoundingClientRect()
+                    this.maxHeight = rect['height']
+                },
+                changeCollapsed: function () {
+                    this.collapsed = !this.collapsed
+                    this.setTableHeight()
+                }
+            }
+        })
+
+        app.use(TDesign)
+        app.mount('#app');
+    </script>
+{% endblock %}
