@@ -1,8 +1,9 @@
 {% extends "dash/base.html" %}
 
 {% block content %}
-    <t-table row-key="index" table-layout="auto" :columns="columns" :max-height="maxHeight" :data="apps"
-             :pagination="pagination" :filter-value.sync="filterValue" @filter-change="onFilterChange" lazy-load>
+    <t-table ref="table" row-key="index" table-layout="auto" :columns="columns" :max-height="maxHeight" :data="apps"
+             :pagination="pagination" :filter-value.sync="filterValue" @filter-change="onFilterChange"
+             :header-affixed-top="headerAffixedTop" lazy-load>
         <template #operation="{ row }">
             <t-space>
                 <t-link :theme="row.pub_date?'warning':'success'" :href="row.pub_url">
@@ -69,10 +70,13 @@
                 return {
                     activeMenu: 'app',
                     maxHeight: 500,
-                    collapsed: true,
+                    collapsed: localStorage.getItem("collapsed") === 'true',
                     columns: columns,
                     apps: apps,
                     filterValue: {},
+                    headerAffixedTop: {
+                        offsetTop: 80,
+                    }
                 }
             },
             computed: {
@@ -105,11 +109,14 @@
                 },
                 changeCollapsed: function () {
                     this.collapsed = !this.collapsed
+                    localStorage.setItem("collapsed", this.collapsed)
                     this.setTableHeight()
+
+                    // TODO: not work
+                    // header-affixed-top effect table width
+                    this.$refs.table.refreshTable()
                 },
                 onFilterChange(filters, ctx) {
-                    console.log('filter-change', filters, ctx);
-                    // 保证日期是一个数组
                     this.filterValue = filters;
                     this.apps = _.filter(apps, item => _.includes(item.name, _.get(filters, 'name', '')))
                 },

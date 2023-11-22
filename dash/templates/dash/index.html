@@ -13,7 +13,7 @@
             data() {
                 return {
                     activeMenu: 'dashboard',
-                    collapsed: true,
+                    collapsed: localStorage.getItem("collapsed") === 'true',
 
                 }
             },
@@ -21,6 +21,7 @@
             methods: {
                 changeCollapsed: function () {
                     this.collapsed = !this.collapsed
+                     localStorage.setItem("collapsed", this.collapsed)
                 }
             }
         })
