@@ -1,10 +1,11 @@
 {% extends "dash/base.html" %}
 
 {% block content %}
-    <t-table row-key="index" table-layout="auto" :columns="columns" :max-height="maxHeight" :data="apps" lazy-load>
+    <t-table row-key="index" table-layout="auto" :columns="columns" :max-height="maxHeight" :data="apps"
+             :pagination="pagination" :filter-value.sync="filterValue" @filter-change="onFilterChange" lazy-load>
         <template #operation="{ row }">
             <t-space>
-                <t-link :theme="row.pub_date?'warning':'success'" :href="row.pub_url" :prefix-icon="renderPrefixIcon">
+                <t-link :theme="row.pub_date?'warning':'success'" :href="row.pub_url">
                     [[ row.pub_date ? 'UnPublish' : 'Publish' ]]
                 </t-link>
 
@@ -29,7 +30,17 @@
         ]
         const columns = [
             {colKey: 'id', title: 'ID'},
-            {colKey: 'name', title: 'Name'},
+            {
+                colKey: 'name', title: 'Name', filter: {
+                    type: 'input',
+                    resetValue: '',
+                    // 按下 Enter 键时也触发确认搜索
+                    confirmEvents: ['onEnter'],
+                    props: {
+                        placeholder: '输入关键词过滤',
+                    },
+                },
+            },
             {colKey: 'desc', title: 'Description'},
             {colKey: 'pub_date', title: 'Publish At'},
             {colKey: 'create_user', title: 'Create By'},
@@ -60,7 +71,19 @@
                     maxHeight: 500,
                     collapsed: true,
                     columns: columns,
-                    apps: apps
+                    apps: apps,
+                    filterValue: {},
+                }
+            },
+            computed: {
+                pagination() {
+                    return {
+                        total: this.apps.length,
+                        defaultCurrent: 1,
+                        defaultPageSize: 14,
+                        showJumper: true,
+                        showPageSize: false,
+                    }
                 }
             },
             mounted() {
@@ -83,7 +106,14 @@
                 changeCollapsed: function () {
                     this.collapsed = !this.collapsed
                     this.setTableHeight()
-                }
+                },
+                onFilterChange(filters, ctx) {
+                    console.log('filter-change', filters, ctx);
+                    // 保证日期是一个数组
+                    this.filterValue = filters;
+                    this.apps = _.filter(apps, item => _.includes(item.name, _.get(filters, 'name', '')))
+                },
+
             }
         })
 
