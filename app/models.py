@@ -14,6 +14,9 @@ class Application(models.Model):
     def __str__(self):
         return self.name
 
+    def my_menu(self):
+        return self.menu_set.filter(delete_date__isnull=True)
+
 
 class Menu(models.Model):
     name = models.CharField(max_length=10)

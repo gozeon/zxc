@@ -1,6 +1,6 @@
 {% extends "dash/base.html" %}
 
-{% block title %}Dashboard - Application{% endblock %}
+{% block title %}Dashboard - Page{% endblock %}
 
 {% block content %}
     <t-table ref="table" row-key="index" table-layout="auto" :columns="columns" :max-height="maxHeight" :data="apps"
@@ -8,9 +8,6 @@
              :header-affixed-top="headerAffixedTop" lazy-load>
         <template #operation="{ row }">
             <t-space>
-                <t-link :theme="row.pub_date?'warning':'success'" :href="row.pub_url">
-                    [[ row.pub_date ? 'UnPublish' : 'Publish' ]]
-                </t-link>
 
                 <t-link theme="danger" :href="row.del_url">
                     Delete
@@ -44,24 +41,26 @@
                     },
                 },
             },
-            {colKey: 'desc', title: 'Description'},
-            {colKey: 'pub_date', title: 'Publish At'},
-            {colKey: 'create_user', title: 'Create By'},
             {colKey: 'create_date', title: 'Create At'},
             {colKey: 'operation', title: 'Operation', fixed: 'right'},
         ]
 
         const apps = [
-            {% for app in apps %}
+            {% for app in pages %}
                 {
                     "id": "{{ app.pk }}",
                     "name": "{{ app.name }}",
-                    "desc": "{{ app.desc }}",
-                    "pub_date": "{{ app.pub_date | date:'c' }}",
-                    "create_user": "{{ app.create_user.username }}",
+                    "menuitem": [
+                        {% for item in app.menuitem_set.all %}
+                            {
+                              id: "{{ item.pk }}",
+                              name: "{{ item.name }}",
+                            },
+                        {% endfor %}
+
+                    ],
                     "create_date": "{{ app.create_date | date:'c' }}",
-                    "del_url": "{% url "dash:del_app" app.pk %}",
-                    "pub_url": "{% url "dash:pub_app" app.pk %}",
+                    "del_url": "{% url "dash:del_page" app.pk %}",
                 },
             {% endfor %}
 
@@ -70,7 +69,7 @@
             delimiters: ["[[", "]]"],
             data() {
                 return {
-                    activeMenu: 'app',
+                    activeMenu: 'page',
                     maxHeight: 500,
                     collapsed: localStorage.getItem("collapsed") === 'true',
                     columns: columns,

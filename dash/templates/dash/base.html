@@ -6,7 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Dashboard{% block title %} - App{% endblock %}</title>
+    <title>{% block title %} Dashboard {% endblock %}</title>
     <script src="https://unpkg.com/lodash"></script>
 
     <script src="https://unpkg.com/vue@next"></script>
@@ -80,6 +80,20 @@
                             <t-icon name="application"/>
                         </template>
                         应用
+                    </t-menu-item>
+
+                    <t-menu-item value="menu" href="{% url "dash:menu" %}">
+                        <template #icon>
+                            <t-icon name="menu"/>
+                        </template>
+                        菜单
+                    </t-menu-item>
+
+                    <t-menu-item value="page" href="{% url "dash:page" %}">
+                        <template #icon>
+                            <t-icon name="html5"/>
+                        </template>
+                        页面
                     </t-menu-item>
 
                     <template #operations>
