@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
 from app.models import Application, Menu, Page
-from .forms import AppForm
+from .forms import AppForm, PageForm
 
 
 @login_required
@@ -42,9 +42,8 @@ def new_app(request):
             return HttpResponseRedirect(reverse('dash:app'))
     else:
         form = AppForm()
-        return render(request, "dash/app/create.html", {"form": form})
+    return render(request, "dash/app/create.html", {"form": form})
 
-    return render(request, "dash/index.html")
 
 @login_required
 def detail_app(request, app_id):
@@ -52,14 +51,13 @@ def detail_app(request, app_id):
         app = get_object_or_404(Application, pk=app_id)
         form = AppForm(request.POST, instance=app)
         if form.is_valid():
-            app = form.save()
+            form.save()
             return HttpResponseRedirect(reverse('dash:app'))
     else:
         app = get_object_or_404(Application, pk=app_id)
         form = AppForm(instance=app)
-        return render(request, "dash/app/detail.html", {"form": form})
+    return render(request, "dash/app/detail.html", {"form": form})
 
-    return render(request, "dash/index.html")
 
 @login_required
 def del_app(request, app_id):
@@ -110,11 +108,39 @@ def del_menu(request, menu_id):
 def page(request):
     if request.method == 'GET':
         pages = Page.objects.filter(delete_date__isnull=True).order_by('-create_date')
-        return render(request, "dash/page.html", {
+        return render(request, "dash/page/page.html", {
             "pages": pages
         })
 
     return render(request, "dash/index.html")
+
+
+@login_required
+def new_page(request):
+    if request.method == 'POST':
+        form = PageForm(request.POST)
+        if form.is_valid():
+            page = form.save(commit=False)
+            page.create_user = request.user
+            page.save()
+            return HttpResponseRedirect(reverse('dash:page'))
+    else:
+        form = PageForm()
+    return render(request, "dash/page/create.html", {"form": form})
+
+
+@login_required
+def detail_page(request, page_id):
+    if request.method == 'POST':
+        page = get_object_or_404(Page, pk=page_id)
+        form = PageForm(request.POST, instance=page)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('dash:page'))
+    else:
+        page = get_object_or_404(Page, pk=page_id)
+        form = PageForm(instance=page)
+    return render(request, "dash/page/detail.html", {"form": form})
 
 
 @login_required

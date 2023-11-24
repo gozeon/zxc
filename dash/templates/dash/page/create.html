@@ -1,0 +1,55 @@
+{% extends "dash/base.html" %}
+
+{% block title %}Dashboard - Page{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script>
+        const messages = [
+            {% for message in messages %}
+                {
+                    level: "{{ message.level }}",
+                    msg: "{{ message }}",
+                    tags: "{{ message.tags }}",
+                },
+            {% endfor %}
+        ]
+
+        const app = Vue.createApp({
+            delimiters: ["[[", "]]"],
+            data() {
+                return {
+                    activeMenu: 'page',
+                    collapsed: localStorage.getItem("collapsed") === 'true',
+                }
+            },
+            mounted() {
+                window.addEventListener("resize", this.setTableHeight);
+            },
+            unmounted() {
+                window.removeEventListener("resize", this.setTableHeight);
+            },
+            methods: {
+                changeCollapsed: function () {
+                    this.collapsed = !this.collapsed
+                    localStorage.setItem("collapsed", this.collapsed)
+                    this.setTableHeight()
+
+                    // TODO: not work
+                    // header-affixed-top effect table width
+                    this.$refs.table.refreshTable()
+                },
+            }
+        })
+
+        app.use(TDesign)
+        app.mount('#app');
+    </script>
+{% endblock %}

@@ -16,4 +16,6 @@ urlpatterns = [
 
     path("page/", views.page, name="page"),
     path("del/page/<int:page_id>", views.del_page, name="del_page"),
+    path("new/page/", views.new_page, name="new_page"),
+    path("detail/page/<int:page_id>", views.detail_page, name="detail_page"),
 ]

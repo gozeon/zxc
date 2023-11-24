@@ -1,5 +1,5 @@
 from django import forms
-from app.models import Application
+from app.models import Application, Page
 
 
 class AppForm(forms.ModelForm):
@@ -15,3 +15,12 @@ class AppForm(forms.ModelForm):
             "desc": forms.Textarea
         }
 
+
+class PageForm(forms.ModelForm):
+    class Meta:
+        model = Page
+
+        fields = [
+            "name",
+            "content",
+        ]
