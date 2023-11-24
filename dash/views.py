@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -64,7 +64,7 @@ def detail_app(request, app_id):
 @login_required
 def del_app(request, app_id):
     app = get_object_or_404(Application, pk=app_id)
-    # app.delete_date = datetime.now()
+    # app.delete_date = timezone.now()
     # app.save()
     app.delete()
     messages.success(request, "Delete {} Success".format(app.name))
@@ -76,7 +76,7 @@ def pub_app(request, app_id):
     app = get_object_or_404(Application, pk=app_id)
     action = "Publish"
     if app.pub_date is None:
-        app.pub_date = datetime.now()
+        app.pub_date = timezone.now()
     else:
         app.pub_date = None
         action = "UnPublish"
@@ -128,7 +128,7 @@ def detail_menu(request, menu_id):
 @login_required
 def del_menu(request, menu_id):
     menu = get_object_or_404(Menu, pk=menu_id)
-    # menu.delete_date = datetime.now()
+    # menu.delete_date = timezone.now()
     # menu.save()
     menu.delete()
     messages.success(request, "Delete {} Success".format(menu.name))
@@ -184,7 +184,7 @@ def detail_menuItem(request, menu_id, menuItem_id):
 @login_required
 def del_menuItem(request, menu_id, menuItem_id):
     menuItem = get_object_or_404(MenuItem, pk=menuItem_id, menu_id=menu_id)
-    # menuItem.delete_date = datetime.now()
+    # menuItem.delete_date = timezone.now()
     # menuItem.save()
     menuItem.delete()
     messages.success(request, "Delete {} Success".format(menuItem.name))
@@ -234,7 +234,7 @@ def detail_page(request, page_id):
 @login_required
 def del_page(request, page_id):
     page = get_object_or_404(Page, pk=page_id)
-    page.delete_date = datetime.now()
+    page.delete_date = timezone.now()
     page.save()
     # page.delete()
     messages.success(request, "Delete {} Success".format(page.name))
