@@ -44,7 +44,7 @@ class Page(models.Model):
 class MenuItem(models.Model):
     name = models.CharField(max_length=10)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
-    page = models.ForeignKey(Page, on_delete=models.DO_NOTHING)
+    page = models.ForeignKey(Page, on_delete=models.PROTECT)
 
     create_date = models.DateTimeField(verbose_name="date created", auto_now_add=True)
     delete_date = models.DateTimeField(verbose_name="date deleted", default=None, null=True, blank=True)

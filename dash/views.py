@@ -234,8 +234,8 @@ def detail_page(request, page_id):
 @login_required
 def del_page(request, page_id):
     page = get_object_or_404(Page, pk=page_id)
-    page.delete_date = timezone.now()
-    page.save()
-    # page.delete()
+    # page.delete_date = timezone.now()
+    # page.save()
+    page.delete()
     messages.success(request, "Delete {} Success".format(page.name))
     return HttpResponseRedirect(reverse('dash:page'))
