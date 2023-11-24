@@ -5,9 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.views.decorators.clickjacking import xframe_options_exempt
 
-from app.models import Application, Menu, Page
-from .forms import AppForm, PageForm
+from app.models import Application, Menu, MenuItem, Page
+from .forms import AppForm, MenuForm, PageForm, MenuItemForm
 
 
 @login_required
@@ -39,6 +40,7 @@ def new_app(request):
             app = form.save(commit=False)
             app.create_user = request.user
             app.save()
+            messages.success(request, "Create {} Success".format(app.name))
             return HttpResponseRedirect(reverse('dash:app'))
     else:
         form = AppForm()
@@ -47,14 +49,14 @@ def new_app(request):
 
 @login_required
 def detail_app(request, app_id):
+    app = get_object_or_404(Application, pk=app_id)
     if request.method == 'POST':
-        app = get_object_or_404(Application, pk=app_id)
         form = AppForm(request.POST, instance=app)
         if form.is_valid():
             form.save()
+            messages.success(request, "Update {} Success".format(app.name))
             return HttpResponseRedirect(reverse('dash:app'))
     else:
-        app = get_object_or_404(Application, pk=app_id)
         form = AppForm(instance=app)
     return render(request, "dash/app/detail.html", {"form": form})
 
@@ -87,11 +89,40 @@ def pub_app(request, app_id):
 def menu(request):
     if request.method == 'GET':
         menus = Menu.objects.filter(delete_date__isnull=True).order_by('-create_date')
-        return render(request, "dash/menu.html", {
+        return render(request, "dash/menu/menu.html", {
             "menus": menus
         })
 
     return render(request, "dash/index.html")
+
+
+@login_required
+def new_menu(request):
+    if request.method == 'POST':
+        form = MenuForm(request.POST)
+        if form.is_valid():
+            menu = form.save(commit=False)
+            menu.create_user = request.user
+            menu.save()
+            messages.success(request, "Create {} Success".format(menu.name))
+            return HttpResponseRedirect(reverse('dash:menu'))
+    else:
+        form = MenuForm()
+    return render(request, "dash/menu/create.html", {"form": form})
+
+
+@login_required
+def detail_menu(request, menu_id):
+    menu = get_object_or_404(Menu, pk=menu_id)
+    if request.method == 'POST':
+        form = MenuForm(request.POST, instance=menu)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Create {} Success".format(menu.name))
+            return HttpResponseRedirect(reverse('dash:menu'))
+    else:
+        form = MenuForm(instance=menu)
+    return render(request, "dash/menu/detail.html", {"form": form, "menuId": menu_id})
 
 
 @login_required
@@ -102,6 +133,62 @@ def del_menu(request, menu_id):
     menu.delete()
     messages.success(request, "Delete {} Success".format(menu.name))
     return HttpResponseRedirect(reverse('dash:menu'))
+
+
+@xframe_options_exempt
+@login_required
+def menuItem(request, menu_id):
+    if request.method == 'GET':
+        menuItems = MenuItem.objects.filter(delete_date__isnull=True, menu_id=menu_id).order_by('-create_date')
+        return render(request, "dash/menu/menuItem/menuItem.html", {
+            "menuItems": menuItems,
+            "menuId": menu_id
+        })
+
+    return render(request, "dash/index.html")
+
+
+@xframe_options_exempt
+@login_required
+def new_menuItem(request, menu_id):
+    menu = get_object_or_404(Menu, pk=menu_id)
+    if request.method == 'POST':
+        form = MenuItemForm(request.POST)
+        if form.is_valid():
+            menuItem = form.save(commit=False)
+            menuItem.menu = menu
+            menuItem.save()
+            messages.success(request, "Create {} Success".format(menu.name))
+            return HttpResponseRedirect(reverse('dash:menuItem', kwargs={"menu_id": menu_id}))
+    else:
+        form = MenuItemForm()
+    return render(request, "dash/menu/menuItem/create.html", {"form": form, "menuId": menu_id})
+
+
+@xframe_options_exempt
+@login_required
+def detail_menuItem(request, menu_id, menuItem_id):
+    menuItem = get_object_or_404(MenuItem, pk=menuItem_id)
+    if request.method == 'POST':
+        form = MenuItemForm(request.POST, instance=menuItem)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Update {} Success".format(menu.name))
+            return HttpResponseRedirect(reverse('dash:menuItem', kwargs={"menu_id": menu_id}))
+    else:
+        form = MenuItemForm(instance=menuItem)
+    return render(request, "dash/menu/menuItem/detail.html", {"form": form, "menuId": menu_id})
+
+
+@xframe_options_exempt
+@login_required
+def del_menuItem(request, menu_id, menuItem_id):
+    menuItem = get_object_or_404(MenuItem, pk=menuItem_id, menu_id=menu_id)
+    # menuItem.delete_date = datetime.now()
+    # menuItem.save()
+    menuItem.delete()
+    messages.success(request, "Delete {} Success".format(menuItem.name))
+    return HttpResponseRedirect(reverse('dash:menuItem', kwargs={"menu_id": menu_id}))
 
 
 @login_required
@@ -123,6 +210,7 @@ def new_page(request):
             page = form.save(commit=False)
             page.create_user = request.user
             page.save()
+            messages.success(request, "Create {} Success".format(page.name))
             return HttpResponseRedirect(reverse('dash:page'))
     else:
         form = PageForm()
@@ -131,14 +219,14 @@ def new_page(request):
 
 @login_required
 def detail_page(request, page_id):
+    page = get_object_or_404(Page, pk=page_id)
     if request.method == 'POST':
-        page = get_object_or_404(Page, pk=page_id)
         form = PageForm(request.POST, instance=page)
         if form.is_valid():
             form.save()
+            messages.success(request, "Update {} Success".format(page.name))
             return HttpResponseRedirect(reverse('dash:page'))
     else:
-        page = get_object_or_404(Page, pk=page_id)
         form = PageForm(instance=page)
     return render(request, "dash/page/detail.html", {"form": form})
 

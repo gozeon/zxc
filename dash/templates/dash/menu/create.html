@@ -1,6 +1,6 @@
 {% extends "dash/base.html" %}
 
-{% block title %}Dashboard - Application{% endblock %}
+{% block title %}Dashboard - Menu{% endblock %}
 
 {% block content %}
     <form method="post">
@@ -16,7 +16,7 @@
             delimiters: ["[[", "]]"],
             data() {
                 return {
-                    activeMenu: 'app',
+                    activeMenu: 'menu',
                     collapsed: localStorage.getItem("collapsed") === 'true',
                 }
             },

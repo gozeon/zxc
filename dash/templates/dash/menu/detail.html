@@ -1,0 +1,51 @@
+{% extends "dash/base.html" %}
+
+{% block title %}Dashboard - Menu{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <input type="submit" value="Submit">
+    </form>
+
+    <t-divider align="left">MenuItem</t-divider>
+    <iframe src="{% url "dash:menuItem" menu_id=menuId %}" frameborder="0" width="100%" height=""></iframe>
+{% endblock %}
+
+{% block script %}
+    <script>
+        const app = Vue.createApp({
+            delimiters: ["[[", "]]"],
+            data() {
+                return {
+                    activeMenu: 'menu',
+                    collapsed: localStorage.getItem("collapsed") === 'true',
+                }
+            },
+            mounted() {
+                this.setIframeHeight()
+                window.addEventListener("resize", this.setIframeHeight);
+
+            },
+            unmounted() {
+                window.removeEventListener("resize", this.setTableHeight);
+            },
+            methods: {
+                setIframeHeight() {
+                    fh = document.querySelector('form')?.getBoundingClientRect().height
+                    divh = document.querySelector('main.t-layout__content>div')?.getBoundingClientRect().height
+                    console.log(`${divh - fh}px`)
+                    document.querySelector('iframe').style.height = `${divh - fh - 100}px`
+                },
+                changeCollapsed: function () {
+                    this.collapsed = !this.collapsed
+                    localStorage.setItem("collapsed", this.collapsed)
+                },
+            }
+        })
+
+        app.use(TDesign)
+        app.mount('#app');
+    </script>
+{% endblock %}

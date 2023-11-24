@@ -13,6 +13,13 @@ urlpatterns = [
 
     path("menu/", views.menu, name="menu"),
     path("del/menu/<int:menu_id>", views.del_menu, name="del_menu"),
+    path("new/menu/", views.new_menu, name="new_menu"),
+    path("detail/menu/<int:menu_id>", views.detail_menu, name="detail_menu"),
+
+    path("<int:menu_id>/menuitem/", views.menuItem, name="menuItem"),
+    path("<int:menu_id>/del/menuitem/<int:menuItem_id>", views.del_menuItem, name="del_menuItem"),
+    path("<int:menu_id>/new/menuitem/", views.new_menuItem, name="new_menuItem"),
+    path("<int:menu_id>/detail/menuitem/<int:menuItem_id>", views.detail_menuItem, name="detail_menuItem"),
 
     path("page/", views.page, name="page"),
     path("del/page/<int:page_id>", views.del_page, name="del_page"),

@@ -1,0 +1,105 @@
+{% extends "dash/menu/menuItem/base.html" %}
+
+{% block content %}
+    <t-space direction="vertical">
+        <t-space>
+            <t-button theme="primary" href="{% url 'dash:new_menuItem' menu_id=menuId %}">
+                <template #icon>
+                    <t-icon name="add"/>
+                </template>
+                新建
+            </t-button>
+        </t-space>
+        <t-table ref="table" row-key="index" table-layout="fixed" :columns="columns" :max-height="maxHeight"
+                 :data="apps" :header-affixed-top="headerAffixedTop" :filter-value.sync="filterValue" @filter-change="onFilterChange"
+                 lazy-load>
+            <template #operation="{ row }">
+                <t-space>
+                    <t-link theme="primary" :href="row.edit_url">
+                        编辑
+                    </t-link>
+                    <t-link theme="danger" :href="row.del_url">
+                        删除
+                    </t-link>
+                </t-space>
+            </template>
+        </t-table>
+    </t-space>
+{% endblock %}
+
+{% block script %}
+    <script>
+        const messages = [
+            {% for message in messages %}
+                {
+                    level: "{{ message.level }}",
+                    msg: "{{ message }}",
+                    tags: "{{ message.tags }}",
+                },
+            {% endfor %}
+        ]
+        const columns = [
+            {colKey: 'id', title: 'ID'},
+            {
+                colKey: 'name', title: 'Name', filter: {
+                    type: 'input',
+                    resetValue: '',
+                    // 按下 Enter 键时也触发确认搜索
+                    confirmEvents: ['onEnter'],
+                    props: {
+                        placeholder: '输入关键词过滤',
+                    },
+                },
+            },
+            {colKey: 'page', title: 'Page'},
+            {colKey: 'create_date', title: 'Create At'},
+            {colKey: 'operation', title: 'Operation', fixed: 'right'},
+        ]
+
+        const apps = [
+            {% for app in menuItems %}
+                {
+                    "id": "{{ app.pk }}",
+                    "name": "{{ app.name }}",
+                    "page": "{{ app.page.name }}",
+                    "create_date": "{{ app.create_date | date:'c' }}",
+                    "del_url": "{% url "dash:del_menuItem" menu_id=menuId menuItem_id=app.pk %}",
+                    "edit_url": "{% url "dash:detail_menuItem" menu_id=menuId menuItem_id=app.pk %}",
+                },
+            {% endfor %}
+
+        ]
+        const app = Vue.createApp({
+            delimiters: ["[[", "]]"],
+            data() {
+                return {
+                    maxHeight: '',
+                    columns: columns,
+                    apps: apps,
+                    filterValue: {},
+                    headerAffixedTop: {
+                        offsetTop: 0,
+                    }
+                }
+            },
+            mounted() {
+                if (messages.length) {
+                    messages.forEach(m => {
+                        this.$message(m.tags, m.msg)
+                    })
+                }
+            },
+
+            methods: {
+                onFilterChange(filters, ctx) {
+                    this.filterValue = filters;
+                    this.apps = _.filter(apps, item => _.includes(item.name, _.get(filters, 'name', '')))
+                },
+
+            }
+        })
+
+        app.use(TDesign)
+        app.mount('#app');
+    </script>
+{% endblock %}

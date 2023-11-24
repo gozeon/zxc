@@ -1,0 +1,20 @@
+{% extends "dash/menu/menuItem/base.html" %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script>
+        const app = Vue.createApp({
+            delimiters: ["[[", "]]"],
+        })
+
+        app.use(TDesign)
+        app.mount('#app');
+    </script>
+{% endblock %}

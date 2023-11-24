@@ -3,18 +3,30 @@
 {% block title %}Dashboard - Menu{% endblock %}
 
 {% block content %}
-    <t-table ref="table" row-key="index" table-layout="auto" :columns="columns" :max-height="maxHeight" :data="apps"
-             :pagination="pagination" :filter-value.sync="filterValue" @filter-change="onFilterChange"
-             :header-affixed-top="headerAffixedTop" lazy-load>
-        <template #operation="{ row }">
-            <t-space>
-
-                <t-link theme="danger" :href="row.del_url">
-                    删除
-                </t-link>
-            </t-space>
-        </template>
-    </t-table>
+    <t-space direction="vertical">
+        <t-space>
+            <t-button theme="primary" href="{% url 'dash:new_menu' %}">
+                <template #icon>
+                    <t-icon name="add"/>
+                </template>
+                新建
+            </t-button>
+        </t-space>
+        <t-table ref="table" row-key="index" table-layout="fixed" :columns="columns" :max-height="maxHeight" :data="apps"
+                 :pagination="pagination" :filter-value.sync="filterValue" @filter-change="onFilterChange"
+                 :header-affixed-top="headerAffixedTop" lazy-load>
+            <template #operation="{ row }">
+                <t-space>
+                    <t-link theme="primary" :href="row.edit_url">
+                        编辑
+                    </t-link>
+                    <t-link theme="danger" :href="row.del_url">
+                        删除
+                    </t-link>
+                </t-space>
+            </template>
+        </t-table>
+    </t-space>
 {% endblock %}
 
 {% block script %}
@@ -54,6 +66,7 @@
                     "app": "{{ app.app.name }}",
                     "create_date": "{{ app.create_date | date:'c' }}",
                     "del_url": "{% url "dash:del_menu" app.pk %}",
+                    "edit_url": "{% url "dash:detail_menu" app.pk %}",
                 },
             {% endfor %}
 
