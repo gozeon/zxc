@@ -9,11 +9,11 @@
         <template #operation="{ row }">
             <t-space>
                 <t-link :theme="row.pub_date?'warning':'success'" :href="row.pub_url">
-                    [[ row.pub_date ? 'UnPublish' : 'Publish' ]]
+                    [[ row.pub_date ? '下线' : '发布' ]]
                 </t-link>
 
                 <t-link theme="danger" :href="row.del_url">
-                    Delete
+                    删除
                 </t-link>
             </t-space>
         </template>

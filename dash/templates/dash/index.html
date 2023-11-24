@@ -3,17 +3,17 @@
 {% block content %}
     <div :style="{width: '100%',height:'200px',display: 'flex',justifyContent: 'center',alignItems: 'center'}">
         <t-space separator="|" align="center" :size="100">
-            <t-statistic title="Applications" :value="{{ app_count }}">
+            <t-statistic title="应用" :value="{{ app_count }}">
                 <template #prefix>
                     <t-icon name="application"/>
                 </template>
             </t-statistic>
-            <t-statistic title="Menu" :value="{{ menu_count }}">
+            <t-statistic title="菜单" :value="{{ menu_count }}">
                 <template #prefix>
                     <t-icon name="menu"/>
                 </template>
             </t-statistic>
-            <t-statistic title="Pages" :value="{{ page_count }}">
+            <t-statistic title="页面" :value="{{ page_count }}">
                 <template #prefix>
                     <t-icon name="html5"/>
                 </template>
