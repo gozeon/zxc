@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
 from app.models import Application, Menu, Page
+from .forms import AppForm
 
 
 @login_required
@@ -23,15 +24,42 @@ def index(request):
 
 @login_required
 def app(request):
-    if request.method == 'GET':
-        apps = Application.objects.filter(create_user__isnull=False,
-                                          delete_date__isnull=True).order_by('-create_date')
-        return render(request, "dash/app.html", {
-            "apps": apps
-        })
+    apps = Application.objects.filter(create_user__isnull=False,
+                                      delete_date__isnull=True).order_by('-create_date')
+    return render(request, "dash/app/app.html", {
+        "apps": apps
+    })
+
+
+@login_required
+def new_app(request):
+    if request.method == 'POST':
+        form = AppForm(request.POST)
+        if form.is_valid():
+            app = form.save(commit=False)
+            app.create_user = request.user
+            app.save()
+            return HttpResponseRedirect(reverse('dash:app'))
+    else:
+        form = AppForm()
+        return render(request, "dash/app/create.html", {"form": form})
 
     return render(request, "dash/index.html")
 
+@login_required
+def detail_app(request, app_id):
+    if request.method == 'POST':
+        app = get_object_or_404(Application, pk=app_id)
+        form = AppForm(request.POST, instance=app)
+        if form.is_valid():
+            app = form.save()
+            return HttpResponseRedirect(reverse('dash:app'))
+    else:
+        app = get_object_or_404(Application, pk=app_id)
+        form = AppForm(instance=app)
+        return render(request, "dash/app/detail.html", {"form": form})
+
+    return render(request, "dash/index.html")
 
 @login_required
 def del_app(request, app_id):
