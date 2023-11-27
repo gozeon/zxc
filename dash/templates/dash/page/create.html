@@ -9,13 +9,7 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        <div>
-            {{ form.name.label_tag }}
-            {{ form.name }}
-        </div>
-        <div style="display: none">
-            {{ form.content }}
-        </div>
+        {{ form.as_p }}
         <div>
             {{ form.content.label_tag }}
             <div id="editor" style="width: 80vw"></div>
@@ -41,11 +35,12 @@
             },
             mounted() {
                 this.contentEl = document.getElementById('id_content')
+                this.contentEl.parentNode.style.display = 'none'
 
                 this.editorEl = document.querySelector('#editor')
 
                 editor = monaco.editor.create(this.editorEl, {
-                    value: this.contentEl.value || '<div>Hello ZXC</div>',
+                    value: this.contentEl.value,
                     language: 'html'
                 });
 
@@ -68,7 +63,7 @@
                     document.querySelector('form').submit()
                 },
                 resizeEditor() {
-                    this.editorEl.style.height = document.querySelector('main.t-layout__content>div')?.getBoundingClientRect()['height'] - 100 + 'px'
+                    this.editorEl.style.height = document.querySelector('main.t-layout__content>div')?.getBoundingClientRect()['height'] * .7 + 'px'
                     editor.layout()
                 }
 
