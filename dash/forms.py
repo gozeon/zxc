@@ -19,7 +19,7 @@ class AppForm(forms.ModelForm):
 class MenuForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["app"].queryset = Application.objects.filter(create_user__isnull=False, delete_date__isnull=True)
+        self.fields["app"].queryset = Application.objects.filter(create_user__isnull=False)
         self.fields['app'].label_from_instance = lambda obj: "%s(%s)" % (obj.name, obj.pk)
 
     class Meta:
@@ -34,7 +34,7 @@ class MenuForm(forms.ModelForm):
 class MenuItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["page"].queryset = Page.objects.filter(create_user__isnull=False, delete_date__isnull=True)
+        self.fields["page"].queryset = Page.objects.filter(create_user__isnull=False)
 
     class Meta:
         model = MenuItem

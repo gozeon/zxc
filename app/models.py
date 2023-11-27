@@ -9,13 +9,9 @@ class Application(models.Model):
 
     create_user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     create_date = models.DateTimeField(verbose_name="date created", auto_now_add=True)
-    delete_date = models.DateTimeField(verbose_name="date deleted", default=None, null=True, blank=True)
 
     def __str__(self):
         return self.name
-
-    def my_menu(self):
-        return self.menu_set.filter(delete_date__isnull=True)
 
 
 class Menu(models.Model):
@@ -23,7 +19,6 @@ class Menu(models.Model):
     app = models.ForeignKey(Application, on_delete=models.CASCADE)
 
     create_date = models.DateTimeField(verbose_name="date created", auto_now_add=True)
-    delete_date = models.DateTimeField(verbose_name="date deleted", default=None, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -35,7 +30,6 @@ class Page(models.Model):
 
     create_user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     create_date = models.DateTimeField(verbose_name="date created", auto_now_add=True)
-    delete_date = models.DateTimeField(verbose_name="date deleted", default=None, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -47,7 +41,6 @@ class MenuItem(models.Model):
     page = models.ForeignKey(Page, on_delete=models.PROTECT)
 
     create_date = models.DateTimeField(verbose_name="date created", auto_now_add=True)
-    delete_date = models.DateTimeField(verbose_name="date deleted", default=None, null=True, blank=True)
 
     def __str__(self):
         return self.name

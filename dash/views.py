@@ -25,8 +25,7 @@ def index(request):
 
 @login_required
 def app(request):
-    apps = Application.objects.filter(create_user__isnull=False,
-                                      delete_date__isnull=True).order_by('-create_date')
+    apps = Application.objects.filter(create_user__isnull=False).order_by('-create_date')
     return render(request, "dash/app/app.html", {
         "apps": apps
     })
@@ -64,8 +63,6 @@ def detail_app(request, app_id):
 @login_required
 def del_app(request, app_id):
     app = get_object_or_404(Application, pk=app_id)
-    # app.delete_date = timezone.now()
-    # app.save()
     app.delete()
     messages.success(request, "Delete {} Success".format(app.name))
     return HttpResponseRedirect(reverse('dash:app'))
@@ -88,7 +85,7 @@ def pub_app(request, app_id):
 @login_required
 def menu(request):
     if request.method == 'GET':
-        menus = Menu.objects.filter(delete_date__isnull=True).order_by('-create_date')
+        menus = Menu.objects.order_by('-create_date')
         return render(request, "dash/menu/menu.html", {
             "menus": menus
         })
@@ -128,8 +125,6 @@ def detail_menu(request, menu_id):
 @login_required
 def del_menu(request, menu_id):
     menu = get_object_or_404(Menu, pk=menu_id)
-    # menu.delete_date = timezone.now()
-    # menu.save()
     menu.delete()
     messages.success(request, "Delete {} Success".format(menu.name))
     return HttpResponseRedirect(reverse('dash:menu'))
@@ -139,7 +134,7 @@ def del_menu(request, menu_id):
 @login_required
 def menuItem(request, menu_id):
     if request.method == 'GET':
-        menuItems = MenuItem.objects.filter(delete_date__isnull=True, menu_id=menu_id).order_by('-create_date')
+        menuItems = MenuItem.objects.filter(menu_id=menu_id).order_by('-create_date')
         return render(request, "dash/menu/menuItem/menuItem.html", {
             "menuItems": menuItems,
             "menuId": menu_id
@@ -184,8 +179,6 @@ def detail_menuItem(request, menu_id, menuItem_id):
 @login_required
 def del_menuItem(request, menu_id, menuItem_id):
     menuItem = get_object_or_404(MenuItem, pk=menuItem_id, menu_id=menu_id)
-    # menuItem.delete_date = timezone.now()
-    # menuItem.save()
     menuItem.delete()
     messages.success(request, "Delete {} Success".format(menuItem.name))
     return HttpResponseRedirect(reverse('dash:menuItem', kwargs={"menu_id": menu_id}))
@@ -194,7 +187,7 @@ def del_menuItem(request, menu_id, menuItem_id):
 @login_required
 def page(request):
     if request.method == 'GET':
-        pages = Page.objects.filter(delete_date__isnull=True).order_by('-create_date')
+        pages = Page.objects.order_by('-create_date')
         return render(request, "dash/page/page.html", {
             "pages": pages
         })
@@ -234,8 +227,6 @@ def detail_page(request, page_id):
 @login_required
 def del_page(request, page_id):
     page = get_object_or_404(Page, pk=page_id)
-    # page.delete_date = timezone.now()
-    # page.save()
     page.delete()
     messages.success(request, "Delete {} Success".format(page.name))
     return HttpResponseRedirect(reverse('dash:page'))

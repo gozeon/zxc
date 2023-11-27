@@ -7,8 +7,7 @@ from .models import Application, Page
 @login_required
 def index(request):
     result = Application.objects.filter(pub_date__isnull=False,
-                                        create_user__isnull=False,
-                                        delete_date__isnull=True).order_by('-pub_date')
+                                        create_user__isnull=False).order_by('-pub_date')
     context = {
         "apps": result
     }
