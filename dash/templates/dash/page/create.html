@@ -2,29 +2,76 @@
 
 {% block title %}Dashboard - Page{% endblock %}
 
+{% block style %}
+    {% include "common/editor.html" %}
+{% endblock %}
+
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        {{ form.as_div }}
-        <input type="submit" value="Submit">
+        <div>
+            {{ form.name.label_tag }}
+            {{ form.name }}
+        </div>
+        <div style="display: none">
+            {{ form.content }}
+        </div>
+        <div>
+            {{ form.content.label_tag }}
+            <div id="editor" style="width: 80vw"></div>
+        </div>
+        <input type="button" value="Submit" @click="beforeSubmit">
     </form>
 {% endblock %}
 
 {% block script %}
+
     <script>
+
+        let editor = null
         const app = Vue.createApp({
             delimiters: ["[[", "]]"],
             data() {
                 return {
                     activeMenu: 'page',
                     collapsed: localStorage.getItem("collapsed") === 'true',
+                    contentEl: null,
+                    editorEl: null
                 }
+            },
+            mounted() {
+                this.contentEl = document.getElementById('id_content')
+
+                this.editorEl = document.querySelector('#editor')
+
+                editor = monaco.editor.create(this.editorEl, {
+                    value: this.contentEl.value || '<div>Hello ZXC</div>',
+                    language: 'html'
+                });
+
+                this.resizeEditor()
+                window.addEventListener('resize', this.resizeEditor)
+            },
+            unmounted() {
+                window.removeEventListener('resize', this.resizeEditor)
             },
             methods: {
                 changeCollapsed: function () {
                     this.collapsed = !this.collapsed
                     localStorage.setItem("collapsed", this.collapsed)
+
+                    this.resizeEditor()
                 },
+                beforeSubmit() {
+                    this.contentEl.value = editor.getValue()
+
+                    document.querySelector('form').submit()
+                },
+                resizeEditor() {
+                    this.editorEl.style.height = document.querySelector('main.t-layout__content>div')?.getBoundingClientRect()['height'] - 100 + 'px'
+                    editor.layout()
+                }
+
             }
         })
 
