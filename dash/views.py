@@ -69,6 +69,18 @@ def del_app(request, app_id):
 
 
 @login_required
+def copy_app(request, app_id):
+    old = get_object_or_404(Application, pk=app_id)
+    old_menus = old.menu_set.all()
+    old.create_date = None
+    old.pk = None
+    old.save()
+    for m in old_menus:
+        old.menu_set.add(m)
+    return HttpResponseRedirect(reverse("dash:app"))
+
+
+@login_required
 def pub_app(request, app_id):
     app = get_object_or_404(Application, pk=app_id)
     action = "Publish"
@@ -99,7 +111,6 @@ def new_menu(request):
         form = MenuForm(request.POST)
         if form.is_valid():
             menu = form.save(commit=False)
-            menu.create_user = request.user
             menu.save()
             messages.success(request, "Create {} Success".format(menu.name))
             return HttpResponseRedirect(reverse('dash:menu'))

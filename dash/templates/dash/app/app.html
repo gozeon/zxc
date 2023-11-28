@@ -19,12 +19,20 @@
                  :header-affixed-top="headerAffixedTop" lazy-load>
             <template #operation="{ row }">
                 <t-space>
+                    <t-link theme="primary" :href="row.see_url">
+                        进入网站
+                    </t-link>
+
                     <t-link theme="primary" :href="row.edit_url">
                         编辑
                     </t-link>
 
                     <t-link :theme="row.pub_date?'warning':'success'" :href="row.pub_url">
                         [[ row.pub_date ? '下线' : '发布' ]]
+                    </t-link>
+
+                    <t-link theme="primary" :href="row.copy_url">
+                        复制
                     </t-link>
 
                     <t-link theme="danger" :href="row.del_url">
@@ -73,12 +81,14 @@
                     "id": "{{ app.pk }}",
                     "name": "{{ app.name }}",
                     "desc": "{{ app.desc }}",
-                    "pub_date": "{{ app.pub_date | date:'c' }}",
+                    "pub_date": "{{ app.pub_date | date:'DATETIME_FORMAT' }}",
                     "create_user": "{{ app.create_user.username }}",
-                    "create_date": "{{ app.create_date | date:'c' }}",
+                    "create_date": "{{ app.create_date | date:'DATETIME_FORMAT' }}",
                     "del_url": "{% url "dash:del_app" app.pk %}",
                     "pub_url": "{% url "dash:pub_app" app.pk %}",
                     "edit_url": "{% url "dash:detail_app" app.pk %}",
+                    "see_url": "{% url "detail" app.pk %}",
+                    "copy_url": "{% url "dash:copy_app" app.pk %}",
                 },
             {% endfor %}
 

@@ -17,10 +17,10 @@ class AppForm(forms.ModelForm):
 
 
 class MenuForm(forms.ModelForm):
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     # self.fields["app"].queryset = Application.objects.filter(create_user__isnull=False)
-    #     # self.fields['app'].label_from_instance = lambda obj: "%s(%s)" % (obj.name, obj.pk)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["app"].queryset = Application.objects.filter(create_user__isnull=False)
+        self.fields['app'].label_from_instance = lambda obj: "%s(%s)" % (obj.name, obj.pk)
 
     class Meta:
         model = Menu

@@ -10,6 +10,7 @@ urlpatterns = [
     path("pub/app/<int:app_id>", views.pub_app, name="pub_app"),
     path("new/app/", views.new_app, name="new_app"),
     path("detail/app/<int:app_id>", views.detail_app, name="detail_app"),
+    path("copy/app/<int:app_id>", views.copy_app, name="copy_app"),
 
     path("menu/", views.menu, name="menu"),
     path("del/menu/<int:menu_id>", views.del_menu, name="del_menu"),

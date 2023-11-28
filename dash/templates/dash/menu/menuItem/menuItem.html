@@ -62,7 +62,7 @@
                     "id": "{{ app.pk }}",
                     "name": "{{ app.name }}",
                     "page": "{{ app.page.name }}",
-                    "create_date": "{{ app.create_date | date:'c' }}",
+                    "create_date": "{{ app.create_date | date:'DATETIME_FORMAT' }}",
                     "del_url": "{% url "dash:del_menuItem" menu_id=menuId menuItem_id=app.pk %}",
                     "edit_url": "{% url "dash:detail_menuItem" menu_id=menuId menuItem_id=app.pk %}",
                 },

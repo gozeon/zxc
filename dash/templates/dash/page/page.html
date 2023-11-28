@@ -74,7 +74,7 @@
 
                     ],
                     "create_user": "{{ app.create_user.username }}",
-                    "create_date": "{{ app.create_date | date:'c' }}",
+                    "create_date": "{{ app.create_date | date:'DATETIME_FORMAT' }}",
                     "del_url": "{% url "dash:del_page" app.pk %}",
                     "edit_url": "{% url "dash:detail_page" app.pk %}",
                 },
