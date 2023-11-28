@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Application(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     desc = models.CharField(max_length=100, blank=True)
     pub_date = models.DateTimeField(verbose_name="date published", null=True, blank=True, default=None)
 
@@ -16,7 +16,7 @@ class Application(models.Model):
 
 class Menu(models.Model):
     name = models.CharField(max_length=10)
-    app = models.ForeignKey(Application, on_delete=models.CASCADE)
+    app = models.ManyToManyField(Application)
 
     create_date = models.DateTimeField(verbose_name="date created", auto_now_add=True)
 
