@@ -1,0 +1,43 @@
+.Ai\(c\) {
+  align-items: center;
+}
+.Bg\(\#000\) {
+  background: #000;
+}
+.C\(\#fff\) {
+  color: #fff;
+}
+.D\(f\) {
+  display: flex;
+}
+.Jc\(sb\) {
+  justify-content: space-between;
+}
+.Ff\(mainFont\) {
+  font-family: 'Noto Serif SC', serif;
+}
+.H\(100vh\) {
+  height: 100vh;
+}
+.H\(30px\) {
+  height: 30px;
+}
+.H\(mainHeight\) {
+  height: calc(100vh - 30px);
+}
+.Lts\(\.05em\) {
+  letter-spacing: .05em;
+}
+.M\(0\) {
+  margin: 0;
+}
+.Px\(1vw\) {
+  padding-left: 1vw;
+  padding-right: 1vw;
+}
+.W\(100vw\) {
+  width: 100vw;
+}
+.W\(200px\) {
+  width: 200px;
+}

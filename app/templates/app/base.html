@@ -7,43 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>ZXC{% block title %} - ALL APP{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'app/atomizer.css' %}">
     {% include "common/font.html" %}
 
     {% block mainStyle %}
-        <style>
-            body, html {
-                margin: 0;
-                font-family: 'Noto Serif SC', serif;
-                letter-spacing: .05em;
-            }
-
-            .container {
-                width: 100vw;
-                height: 100vh;
-            }
-
-            .container header {
-                height: 30px;
-                background: black;
-                color: #fff;
-
-                padding: 0 1vw;
-
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            .container header a {
-                color: #fff;
-            }
-
-            .container main {
-                height: calc(100vh - 30px);
-                display: flex;
-            }
-
-        </style>
     {% endblock %}
 
     {% block style %}
@@ -52,25 +20,25 @@
     {% block link %}
     {% endblock %}
 </head>
-<body>
-<div class="container">
-    <header>
+<body class="M(0) Lts(.05em) Ff(mainFont)">
+<div class="W(100vw) H(100vh)">
+    <header class="H(30px) C(#fff) Bg(#000) D(f) Jc(sb) Ai(c) Px(1vw)">
         {% block headerTitle %}
             <span>ZXC</span>
         {% endblock %}
         <div>
             {% block headerBtn %}{% endblock %}
             {% if user.is_authenticated %}
-                <a href="{% url 'dash:index' %}">{{ "dash" | upper }}</a>
-                <a href="{% url 'logout' %}">{{ user.username | upper }}</a>
+                <a class="C(#fff)" href="{% url 'dash:index' %}">{{ "dash" | upper }}</a>
+                <a class="C(#fff)" href="{% url 'logout' %}">{{ user.username | upper }}</a>
             {% endif %}
         </div>
     </header>
 
-    <main>
+    <main class="D(f) H(mainHeight)">
 
         {% block menu %}
-            <nav>
+            <nav class="W(200px)">
             </nav>
         {% endblock %}
 

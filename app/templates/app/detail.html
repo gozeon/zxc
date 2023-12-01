@@ -10,6 +10,7 @@
             width: 200px;
             padding: 0;
             border-right: 1px solid #ece9e9;
+            flex-shrink: 0;
         }
 
         nav.menu ul, li {
@@ -47,6 +48,7 @@
         div#app {
             flex: 1;
             padding: 20px;
+            overflow: scroll;
         }
     </style>
 {% endblock %}
@@ -56,7 +58,7 @@
 {% endblock %}
 
 {% block headerBtn %}
-    <a href="{% url "app" %}">ALL APP</a>
+    <a class="C(#fff)" href="{% url "app" %}">ALL APP</a>
 {% endblock %}
 
 {% block menu %}
