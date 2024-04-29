@@ -29,8 +29,8 @@
         <div>
             {% block headerBtn %}{% endblock %}
             {% if user.is_authenticated %}
-                <a class="C(#fff)" href="{% url 'dash:index' %}">{{ "dash" | upper }}</a>
-                <a class="C(#fff)" href="{% url 'logout' %}">{{ user.username | upper }}</a>
+                <a class="C(#fff) Td(n) Td(u):hover" href="{% url 'dash:index' %}">{{ "后台管理" | upper }}</a>
+                <a class="C(#fff) Td(n) Td(u):hover" href="{% url 'logout' %}">{{ user.username | upper }}(退出)</a>
             {% endif %}
         </div>
     </header>

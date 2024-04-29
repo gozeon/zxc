@@ -2,44 +2,19 @@
 {% block menu %}{% endblock %}
 
 {% block style %}
-    <style>
-        .content {
-            padding: 20px 40px;
-        }
-
-        .content a.box {
-            padding: 8px 10px;
-            border-radius: 3px;
-            text-decoration: none;
-            color: black;
-
-            display: inline-block;
-        }
-
-        .content a.box .name {
-            font-size: 20px;
-            font-weight: bolder;
-        }
-
-        .content a.box .desc {
-            font-size: 16px;
-            line-height: 22px;
-            color: #333
-        }
-    </style>
 {% endblock %}
 
 {% block content %}
     {% if apps %}
-        <div class="content">
+        <div class="D(f) Flw(w) Px(20px) Py(40px)">
             {% for app in apps %}
-                <a class="box" href="{% url 'detail' app.id %}">
-                    <div class="name">{{ app.name }}</div>
+                <a class="W(350px) C(#000) Td(n) Px(8px) Py(10px)" href="{% url 'detail' app.id %}">
+                    <div class="Fz(20px) Lh(24px) Fw(br)">{{ app.name }}({{ app.id }})</div>
 
-                    <div class="desc">{{ app.desc }}</div>
-                    <div class="desc">ID: {{ app.id }}</div>
-                    <div class="desc">Create At: {{ app.create_date }}</div>
-                    <div class="desc">Create By: {{ app.create_user.username }}</div>
+                    <div class="Fz(16px) Lh(22px) C(#333)"><span class="Fw(br)">创建时间:</span> {{ app.create_date }}</div>
+                    <div class="Fz(16px) Lh(22px) C(#333)"><span class="Fw(br)">创建人:</span> {{ app.create_user.username }}</div>
+                    <div class="Fz(16px) Lh(22px) C(#333) Maw(300px)" >{{ app.desc }}</div>
+
                 </a>
             {% endfor %}
         </div>

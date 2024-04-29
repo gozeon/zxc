@@ -4,6 +4,12 @@
 .Bg\(\#000\) {
   background: #000;
 }
+.C\(\#000\) {
+  color: #000;
+}
+.C\(\#333\) {
+  color: #333;
+}
 .C\(\#fff\) {
   color: #fff;
 }
@@ -13,8 +19,20 @@
 .Jc\(sb\) {
   justify-content: space-between;
 }
+.Flw\(w\) {
+  flex-wrap: wrap;
+}
 .Ff\(mainFont\) {
   font-family: 'Noto Serif SC', serif;
+}
+.Fw\(br\) {
+  font-weight: bolder;
+}
+.Fz\(16px\) {
+  font-size: 16px;
+}
+.Fz\(20px\) {
+  font-size: 20px;
 }
 .H\(100vh\) {
   height: 100vh;
@@ -28,16 +46,50 @@
 .Lts\(\.05em\) {
   letter-spacing: .05em;
 }
+.Lh\(22px\) {
+  line-height: 22px;
+}
+.Lh\(24px\) {
+  line-height: 24px;
+}
 .M\(0\) {
   margin: 0;
+}
+.Maw\(300px\) {
+  max-width: 300px;
 }
 .Px\(1vw\) {
   padding-left: 1vw;
   padding-right: 1vw;
+}
+.Px\(20px\) {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.Px\(8px\) {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.Py\(10px\) {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.Py\(40px\) {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.Td\(n\) {
+  text-decoration: none;
+}
+.Td\(u\)\:hover:hover {
+  text-decoration: underline;
 }
 .W\(100vw\) {
   width: 100vw;
 }
 .W\(200px\) {
   width: 200px;
+}
+.W\(350px\) {
+  width: 350px;
 }

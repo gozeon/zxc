@@ -54,11 +54,11 @@
 {% endblock %}
 
 {% block headerTitle %}
-    <span>{{ app.name | upper }}</span>
+    <a class="C(#fff) Td(n) Td(u):hover" href="{% url 'detail' app.id %}">{{ app.name | upper }}</a>
 {% endblock %}
 
 {% block headerBtn %}
-    <a class="C(#fff)" href="{% url "app" %}">ALL APP</a>
+    <a class="C(#fff) Td(n) Td(u):hover" href="{% url "app" %}">全部应用</a>
 {% endblock %}
 
 {% block menu %}
