@@ -1,8 +1,14 @@
 .Ai\(c\) {
   align-items: center;
 }
+.Bd\(0\) {
+  border: 0;
+}
 .Bg\(\#000\) {
   background: #000;
+}
+.Bgc\(black\) {
+  background-color: black;
 }
 .C\(\#000\) {
   color: #000;
@@ -15,6 +21,9 @@
 }
 .D\(f\) {
   display: flex;
+}
+.D\(ib\) {
+  display: inline-block;
 }
 .Jc\(sb\) {
   justify-content: space-between;

@@ -59,9 +59,15 @@
                     <a href="{% url "app" %}">
                         <t-icon class="t-menu__operations-icon" name="home"/>
                     </a>
-                <a href="{% url "logout" %}">
-                        <t-icon class="t-menu__operations-icon" name="logout"/>
-                    </a>
+
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <t-button type="submit" shape="square" variant="text">
+                            <template #icon>
+                                <t-icon name="logout"/>
+                            </template>
+                        </t-button>
+                    </form>
                 </template>
             </t-head-menu>
         </t-header>
